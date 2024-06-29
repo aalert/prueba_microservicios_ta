@@ -1,10 +1,15 @@
+import socket
+
 import influxdb_client
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 url = "influx"
 org = "tecnoandina"
 username = "admin"
-password = "admin"
+password = "influxadmin"
+port = 8086
+
+url = f"http://{socket.gethostbyname(url)}:{port}"
 
 client = influxdb_client.InfluxDBClient(
     url=url,
@@ -12,6 +17,8 @@ client = influxdb_client.InfluxDBClient(
     password=password,
     org=org
 )
+
+print(f"Clien health: {client.health()}")
 
 
 def write_to_influxdb(data):
@@ -22,7 +29,7 @@ def write_to_influxdb(data):
 
     point = influxdb_client.Point(measurement).\
         tag("version", data["version"]).\
-        field("temperatura", data["temperatura"]).time(data["time"])
+        field("value", data["value"]).time(data["time"])
 
     write_api.write(bucket=bucket, record=point)
 

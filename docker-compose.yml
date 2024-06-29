@@ -7,6 +7,7 @@ services:
       - 8081:8080
     depends_on:
       - mosquitto
+    command: python -u main.py
 
   servicio-2:
     build: ./servicio-2/
@@ -14,6 +15,8 @@ services:
       - 8082:8080
     depends_on:
       - mosquitto
+      - influx
+    command: python -u main.py
 
   servicio-3:
     build: ./servicio-3/
@@ -22,12 +25,13 @@ services:
     depends_on:
       - influx
       - mysql
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
   mosquitto:
     image: eclipse-mosquitto:2
     ports:
       - 1883:1883
-    volumes: 
+    volumes:
       - ./eclipse-mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
   mysql:
@@ -41,7 +45,7 @@ services:
       - MYSQL_DATABASE=tecnoandina
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=admin
-  
+
   influx:
     image: influxdb:alpine
     volumes:
@@ -49,11 +53,12 @@ services:
     ports:
       - 8086:8086
     environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
       - DOCKER_INFLUXDB_INIT_USERNAME=admin
-      - DOCKER_INFLUXDB_INIT_PASSWORD=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=influxadmin
       - DOCKER_INFLUXDB_INIT_ORG=tecnoandina
       - DOCKER_INFLUXDB_INIT_BUCKET=system
-  
+
 volumes:
   mysqldata:
   influxdata:

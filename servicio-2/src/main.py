@@ -24,7 +24,7 @@ def on_unsubscribe(client, userdata, mid, reason_code_list, properties):
 def on_message(client, userdata, message):
     # userdata is the structure we choose to provide, here it's a list()
     #userdata.append(message.payload)
-
+    print("on message payload:", message.payload)
     data = json.loads(message.payload)
 
     write_to_influxdb(data)
@@ -36,7 +36,7 @@ def on_connect(client, userdata, flags, reason_code, properties):
     else:
         # we should always subscribe from on_connect callback to be sure
         # our subscribed is persisted across reconnections.
-        client.subscribe("$SYS/#")
+        client.subscribe("challenge/dispositivo/rx")
 
 mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 mqttc.on_connect = on_connect

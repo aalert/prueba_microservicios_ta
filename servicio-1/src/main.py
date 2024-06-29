@@ -7,11 +7,12 @@ import paho.mqtt.publish as publish
 
 
 def main():
+    print("starting...")
     while True:
         random_data = {
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "value": uniform(0, 1000),
-            "version": randint(0, 1)
+            "version": randint(1, 2)
         }
 
         print(f"sending: {random_data}")
