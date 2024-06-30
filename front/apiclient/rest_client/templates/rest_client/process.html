@@ -1,0 +1,14 @@
+{% extends 'rest_client/index.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Process{% endblock %}
+{% block heading %}Process{% endblock %}
+{% block content %}
+    <form method="post">
+    {% csrf_token %}
+    {{ form|crispy  }}
+    <input type="submit" value="Submit" class="btn btn-success">
+{% endblock %}
+{% block response %}
+    {{ response }}
+{% endblock %}

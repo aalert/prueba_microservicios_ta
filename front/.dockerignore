@@ -1,0 +1,8 @@
+# Ignore the tests directory
+src/tests/
+
+# Ignore other files and directories
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
