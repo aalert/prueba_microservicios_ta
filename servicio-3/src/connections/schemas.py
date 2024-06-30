@@ -26,3 +26,7 @@ class Alert(BaseModel):
     updated_at: datetime_t
 
 
+class Search(BaseModel):
+    version: int
+    type: Optional[str] = None
+    sended: Optional[bool] = None

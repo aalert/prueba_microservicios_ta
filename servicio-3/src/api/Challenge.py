@@ -30,17 +30,43 @@ async def process(devices: schemas.ProcessDevices, db: Session = Depends(get_db)
     """
 
     absolute_time = helpers.parse_absolute_time(devices.timeSearch)
-    #try:
-    devices = influx_adapter.read_devices_from_system(
-        absolute_time, devices.version
-    )
+    try:
+        devices = influx_adapter.read_devices_from_system(
+            absolute_time, devices.version
+        )
 
-    alerts = map(helpers.create_alert_form_device, devices)
+        alerts = map(helpers.create_alert_form_device, devices)
 
-    crud.insert_alerts(db, alerts)
+        crud.insert_alerts(db, alerts)
+
+        return JSONResponse(content={"status": "ok"})
+    except Exception as e:
+        return JSONResponse(content={"status": f"Error: {str(e)}"}, status_code=500)
 
 
-        #return JSONResponse(content={"status": "ok"})
-    #except Exception as e:
-        #return JSONResponse(content={"status": f"Error: {str(e)}"}, status_code=500)
+@router.post("/search")
+async def search(search: schemas.Search, db: Session = Depends(get_db)):
+    """
+    Searche alerts in the database filtered by the parameters in the body
+    where type and sended are optional
 
+    body
+    "version": number,
+    "type": string, // opcional
+    "sended": bool // opcional
+
+    response
+    [
+        {
+            datetime: "2022-01-01 10:00:01",
+            value: 566.45,
+            version: 1,
+            type: "MEDIA",
+            sended: false
+        }, ...
+    ]
+    """
+
+    alerts = crud.search_alerts(db, search)
+
+    return alerts
