@@ -11,6 +11,7 @@ def insert_alerts(db: Session, alerts: List[schemas.Alert]):
     """
     alerts must be a list of Alerts objects
     """
+    alerts_objects = map(lambda alert: Alerts(**alert.model_dump()), alerts)
 
-    db.bulk_save_objects(alerts)
+    db.bulk_save_objects(alerts_objects)
     db.commit()

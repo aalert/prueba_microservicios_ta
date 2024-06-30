@@ -23,7 +23,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-class AlertType(enum.Enum):
+class AlertType(str, enum.Enum):
     ALTA = "ALTA"
     MEDIA = "MEDIA"
     BAJA = "BAJA"

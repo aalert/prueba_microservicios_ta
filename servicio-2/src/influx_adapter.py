@@ -18,9 +18,6 @@ client = influxdb_client.InfluxDBClient(
     org=org
 )
 
-print(f"Clien health: {client.health()}")
-
-
 def write_to_influxdb(data):
     bucket = "system"
     measurement = "dispositivos"

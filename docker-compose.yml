@@ -25,7 +25,15 @@ services:
     depends_on:
       - influx
       - mysql
-    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8080
+    volumes:
+      - ./servicio-3/src:/app
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=tecnoandina
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
 
   mosquitto:
     image: eclipse-mosquitto:2

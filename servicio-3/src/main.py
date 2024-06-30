@@ -1,10 +1,10 @@
-from api.Challenge import router
+from api import Challenge
 from fastapi import Depends, FastAPI
 
 app = FastAPI()
 
 
 app.include_router(
-    router.router,
+    Challenge.router,
     prefix="/api/challenge",
 )
