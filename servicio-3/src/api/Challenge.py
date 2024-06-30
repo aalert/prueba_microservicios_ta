@@ -35,7 +35,7 @@ async def process(devices: schemas.ProcessDevices, db: Session = Depends(get_db)
             absolute_time, devices.version
         )
 
-        alerts = map(helpers.create_alert_form_device, devices)
+        alerts = list(map(helpers.create_alert_form_device, devices))
 
         crud.insert_alerts(db, alerts)
 

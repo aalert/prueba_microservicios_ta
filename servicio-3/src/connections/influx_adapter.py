@@ -34,7 +34,10 @@ def read_devices_from_system(absolute_time=None, version=None):
 
     range = ""
     if isinstance(absolute_time, tuple) and absolute_time:
-        range = f"|> range(start: {filter_abs_time_string(absolute_time, is_start=True)})"
+        clean_absolute_time = filter_abs_time_string(absolute_time, is_start=True)
+
+        for each_time in clean_absolute_time:
+            range += f"|> range(start: {each_time}) "
 
     query = query.replace("RANGE_PLACEHOLDER", range)
 
@@ -56,17 +59,17 @@ def read_devices_from_system(absolute_time=None, version=None):
 
 def filter_abs_time_string(absolute_time: tuple, is_start=False) -> str:
     minutes, hours, days = absolute_time
-    result = ""
+    result = []
     symbol = ""
 
     if is_start:
         symbol = "-"
 
     if minutes:
-        result += f"{symbol}{minutes}"
+        result.append(f"{symbol}{minutes}")
     if hours:
-        result += f"{symbol}{hours}"
+        result.append(f"{symbol}{hours}")
     if days:
-        result += f"{symbol}{days}"
+        result.append(f"{symbol}{days}")
 
     return result

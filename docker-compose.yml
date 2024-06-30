@@ -67,8 +67,6 @@ services:
 
   front:
     build: ./front/
-    volumes:
-      - ./front/apiclient:/app
     ports:
       - 8001:8000
     depends_on:

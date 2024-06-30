@@ -35,7 +35,7 @@ class Alerts(Base):
     datetime = Column(DateTime)
     value = Column(Float)
     version = Column(Integer)
-    type = Column(Enum(AlertType))
+    type = Column(Enum(AlertType), nullable=True)
     sended = Column(Boolean)
     created_at = Column(DateTime)
     updated_at = Column(DateTime)

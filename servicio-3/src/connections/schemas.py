@@ -1,8 +1,9 @@
 from datetime import datetime as datetime_t
 from typing import Optional
 
-from connections.models import AlertType
 from pydantic import BaseModel
+
+from connections.models import AlertType
 
 
 class ProcessDevices(BaseModel):
@@ -20,7 +21,7 @@ class Alert(BaseModel):
     datetime: datetime_t
     value: float
     version: int
-    type: AlertType
+    type: Optional[AlertType] = None
     sended: bool
     created_at: datetime_t
     updated_at: datetime_t

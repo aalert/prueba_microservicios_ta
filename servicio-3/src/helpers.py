@@ -45,19 +45,20 @@ def parse_absolute_time(absolute_time: str) -> tuple[str, str, str]:
 
 
 def create_alert_form_device(device: Device):
+    _type = calculate_type(device.version, device.value)
+
     return Alert(
         id_alerta=None,
         datetime=device.time,
         value=device.value,
         version=device.version,
         sended=False,
-        type=calculate_type(device.version, device.value),
+        type=_type,
         created_at=datetime_t.now(),
         updated_at=datetime_t.now(),
     )
 
 def calculate_type(version: int, value: float) -> AlertType:
-
     if version == 1:
         if value > 800:
             return AlertType.ALTA
