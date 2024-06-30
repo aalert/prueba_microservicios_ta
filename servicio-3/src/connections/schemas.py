@@ -28,5 +28,14 @@ class Alert(BaseModel):
 
 class Search(BaseModel):
     version: int
-    type: Optional[str] = None
+    type: Optional[AlertType] = None
     sended: Optional[bool] = None
+    class Config:
+        extra = "forbid"
+
+class SendAlert(BaseModel):
+    version: int
+    type: Optional[AlertType] = None
+
+    class Config:
+        extra = "forbid"

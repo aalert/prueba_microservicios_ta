@@ -47,7 +47,7 @@ async def process(devices: schemas.ProcessDevices, db: Session = Depends(get_db)
 @router.post("/search")
 async def search(search: schemas.Search, db: Session = Depends(get_db)):
     """
-    Searche alerts in the database filtered by the parameters in the body
+    Search alerts in the database filtered by the parameters in the body
     where type and sended are optional
 
     body
@@ -70,3 +70,24 @@ async def search(search: schemas.Search, db: Session = Depends(get_db)):
     alerts = crud.search_alerts(db, search)
 
     return alerts
+
+@router.post("/send")
+async def send(send_alerts: schemas.SendAlert, db: Session = Depends(get_db)):
+    """
+    Send all unsended alerts filtered by version and type
+
+    body
+    "version": number
+    "type": string
+
+    Reponse
+    - 200 `{"status": "ok"}`
+    - 422 `{"status": "No se pudo procesar los párametros"}`
+    - 500 `{"status": "Error: {motivo}"}`
+    """
+
+    try:
+        crud.send_alerts(db, send_alerts)
+        return JSONResponse(content={"status": "ok"})
+    except Exception as e:
+        return JSONResponse(content={"status": f"Error: {str(e)}"}, status_code=500)

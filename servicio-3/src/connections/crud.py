@@ -1,6 +1,7 @@
 from typing import List
 
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import update
 
 from connections import schemas
 from connections.models import Alerts
@@ -30,3 +31,15 @@ def search_alerts(db: Session, search: schemas.Search) -> List[Alerts]:
         query = query.filter(Alerts.sended == search.sended)
 
     return list(query.all())
+
+def send_alerts(db: Session, alerts: schemas.SendAlert):
+    """
+    send alerts to the external service
+    """
+    db.execute(
+        update(Alerts).
+        where(Alerts.version == alerts.version, Alerts.type == alerts.type).
+        values(sended=True)
+    )
+
+    db.commit()
