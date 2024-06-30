@@ -1,4 +1,3 @@
-import time
 
 import helpers
 from connections import crud, influx_adapter, models, schemas
@@ -6,8 +5,6 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
-# waiting for mysql service to run
-time.sleep(10)
 models.Base.metadata.create_all(bind=models.engine)
 router = APIRouter()
 

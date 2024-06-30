@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   servicio-1:
     build: ./servicio-1/
@@ -23,8 +21,8 @@ services:
     ports:
       - 8083:8080
     depends_on:
-      - influx
-      - mysql
+      mysql:
+        condition: service_healthy
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8080
     # volumes:
     #   - ./servicio-3/src:/app
@@ -53,6 +51,12 @@ services:
       - MYSQL_DATABASE=tecnoandina
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=admin
+      - MYSQL_ALLOW_EMPTY_PASSWORD="yes"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   influx:
     image: influxdb:alpine
