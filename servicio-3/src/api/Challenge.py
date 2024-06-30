@@ -1,3 +1,4 @@
+import time
 
 import helpers
 from connections import crud, influx_adapter, models, schemas
@@ -5,6 +6,8 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
+# waiting for mysql service to run
+time.sleep(10)
 models.Base.metadata.create_all(bind=models.engine)
 router = APIRouter()
 
@@ -28,8 +31,11 @@ async def process(devices: schemas.ProcessDevices, db: Session = Depends(get_db)
     - 422 `{"status": "No se pudo procesar los párametros"}`
     - 500 `{"status": "Error: {motivo}"}`
     """
+    try:
+        absolute_time = helpers.parse_absolute_time(devices.timeSearch)
+    except Exception:
+        return JSONResponse(content={"status": "No se pudo procesar los párametros"}, status_code=422)
 
-    absolute_time = helpers.parse_absolute_time(devices.timeSearch)
     try:
         devices = influx_adapter.read_devices_from_system(
             absolute_time, devices.version

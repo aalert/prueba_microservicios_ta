@@ -1,6 +1,7 @@
 import socket
 
 import influxdb_client
+
 from connections.schemas import Device
 
 url = "influx"

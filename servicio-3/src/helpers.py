@@ -1,15 +1,13 @@
 import re
+from datetime import datetime as datetime_t
+
+from connections.schemas import Alert, AlertType, Device
 
 DAYS = re.compile(r"(\d+d)")
 HOURS = re.compile(r"(\d+h)")
 MINUTES = re.compile(r"(\d+m)")
 WRONG_LETTERS = re.compile(r"[^dmh,\d\s]+")
 LETTER_WITHOUT_NUMBER = re.compile(r"\b(?<!\d)[mhd]\b")
-
-from datetime import datetime as datetime_t
-
-from connections.schemas import Alert, AlertType, Device
-
 
 def parse_absolute_time(absolute_time: str) -> tuple[str, str, str]:
     """

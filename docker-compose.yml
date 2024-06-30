@@ -26,6 +26,8 @@ services:
       - influx
       - mysql
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8080
+    # volumes:
+    #   - ./servicio-3/src:/app
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_PORT=3306
